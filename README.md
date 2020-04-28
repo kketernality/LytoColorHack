@@ -31,7 +31,13 @@ pip install pyautogui
 
 Open the game and place the browser on the left to fill the left half screen as the demo video shows.
 
-Press `s` to tell the program the game had started and begin auto-gaming.
+```
+python LytoColorHack.py
+```
+
+Execute the code, a window will pop up and show the target region on screen and the circles it detected.
+
+Once the game is started, press `s` to tell the program the game had started and begin auto-gaming.
 
 ## Methodology
 
