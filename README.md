@@ -49,3 +49,7 @@ Once the game is started, press `s` to tell the program the game had started and
 * Identify the circle with the most different color from the others.
 * If auto-gaming is on, simulate mouse to click the circle we identified.
 * Display the result on a separate window.
+
+## Credit
+
+This project partially references this [repo](https://github.com/OuYangMinOa/Lyto-Different-Color) as a starting point.
