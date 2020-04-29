@@ -169,7 +169,7 @@ while True:
     # Processing time of this frame
     endTime = time.time()
     procMs = 1000.0 * (endTime - beginTime)
-    waitMs = max(frameMs - procMs, 1)  # 0 means wait indefinitely
+    waitMs = max(int(frameMs - procMs), 1)  # 0 means wait indefinitely
 
     # Display processing time of each frame
     cv2.putText(screen, '{:.2f} ms'.format(procMs),
