@@ -16,6 +16,9 @@ This code was developed and tested on the following environment.
 
 * Windows 10 :: 64-bit
 * Python 3.6.1 :: Anaconda 4.4.0 (64-bit)
+* Resolution :: 1920 x 1080
+
+The accuracy of `cv2.HoughCircles()` heavily depends on the screen resolution and the parameters. Please feel free to tune the parameters to attain higher accuracy of circles detection.
 
 ## Dependencies
 
