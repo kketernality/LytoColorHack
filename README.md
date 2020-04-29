@@ -4,7 +4,7 @@ LytoColorHack is a simple project for fun.
 
 Use it to automatically play Lyto Different Color Game to beat your pitty friends. :D
 
-## Demostration
+## Demonstration
 
 [![Auto-Gaming Hack for Lyto Different Color Game](https://img.youtube.com/vi/z-moUBR4lsY/0.jpg)](https://www.youtube.com/watch?v=z-moUBR4lsY "Auto-Gaming Hack for Lyto Different Color Game")
 
@@ -38,6 +38,8 @@ python LytoColorHack.py
 Execute the code, a window will pop up and show the target region on screen and the circles it detected.
 
 Once the game is started, press `s` to tell the program the game had started and begin auto-gaming.
+
+To exit the program and close the window, press `ESC`.
 
 ## Methodology
 
