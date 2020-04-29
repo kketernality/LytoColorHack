@@ -1,6 +1,6 @@
 # LytoColorHack
 
-LytoColorHack is a simple project for fun. 
+LytoColorHack is a simple project for fun.
 
 Use it to automatically play Lyto Different Color Game to beat your pitty friends. :D
 
@@ -24,9 +24,16 @@ Python package required for this project can be easily installed via pip:
 ```
 pip install numpy
 pip install opencv-python
-pip install pillow 
+pip install pillow
 pip install pyautogui
 ```
+
+For Linux system, PIL (pillow) does not support ImageGrab. Use alternative library:
+
+```
+pip install pyscreenshot
+```
+
 ## Usage
 
 Open the game and place the browser on the left to fill the left half screen as the demo video shows.
@@ -45,7 +52,7 @@ To exit the program and close the window, press `ESC`.
 
 * Take a screenshot of the left half screen.
 * Indentify the circles in the screenshot using Hough in OpenCV.
-* Post-process circles: 
+* Post-process circles:
   1. Boundary check
   2. Non-max suppression
 * Identify the circle with the most different color from the others.

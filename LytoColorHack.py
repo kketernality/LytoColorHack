@@ -2,7 +2,12 @@ import time
 import math
 import numpy as np
 import cv2
-from PIL import ImageGrab
+
+try:
+    from PIL import ImageGrab
+except ImportError:
+    import pyscreenshot as ImageGrab
+
 import pyautogui
 
 # Flag to control program to do auto-gaming
@@ -48,14 +53,22 @@ minRadius = int(crop_w / 20)
 
 print("Crop window: [{}, {}], size: [{}, {}]".format(crop_x1, crop_y1, crop_w, crop_h))
 
+# Bounding box of the target region
+bbox = (crop_x1, crop_y1, crop_x2, crop_y2)
+
 # Variable for auto-gaming
 lastAutoGameTime = time.time()
 
 while True:
     beginTime = time.time()
-    screen = np.asarray(ImageGrab.grab())
 
-    screen = screen[crop_y1:crop_y2, crop_x1:crop_x2, :]
+    screen = ImageGrab.grab(bbox)
+
+    # Fail to take the screenshot
+    if screen is None:
+        continue
+
+    screen = np.asarray(screen)
     screen = cv2.cvtColor(screen, cv2.COLOR_RGB2BGR)
 
     # Using OpenCV to find circles in screen
@@ -116,7 +129,7 @@ while True:
         color = screen[y1:y2, x1:x2, :].mean(axis=(0, 1))
         circleColors.append(color)
 
-    # Find the circle with the most different color with the others
+    # Find the circle with the most different color from the others
     circleDistances = []
     numCircles = len(circles)
     for itsIdx in range(numCircles):
@@ -142,28 +155,40 @@ while True:
         if idx > maxNumDrawing:
             break
 
+        # Fix deprecated warning
+        center = (int(x), int(y))
+
         if idx == maxIdx:
             # Fill the circle with white color
-            cv2.circle(screen, (x, y), radius, (255, 255, 255), -1, 8, 0)
+            cv2.circle(screen, center, radius, (255, 255, 255), -1, 8, 0)
             # Draw the boundary of the circle
-            cv2.circle(screen, (x, y), radius, (0, 0, 255), 2, 8, 0)
+            cv2.circle(screen, center, radius, (0, 0, 255), 2, 8, 0)
         else:
             # Draw the center point of the circle
-            cv2.circle(screen, (x, y), 3, (15, 230, 15), -1, 8, 0)
+            cv2.circle(screen, center, 3, (15, 230, 15), -1, 8, 0)
             # Draw the boundary of the circle
-            cv2.circle(screen, (x, y), radius, (15, 230, 15), 2, 8, 0)
+            cv2.circle(screen, center, radius, (15, 230, 15), 2, 8, 0)
 
     # Auto-gaming logic
     if autoGaming and maxIdx >= 0:
         currentTime = time.time()
+        # Delay the trigger of auto-gaming for an amount of time
         if 1000.0 * (currentTime - lastAutoGameTime) > autoGamingMs:
+            # Unpack values of the most different circle
             max_x, max_y, _ = circles[maxIdx]
+            # Preserve current mouse position
             prevMouse = pyautogui.position()
+
+            # Click the indentified circle on the main screen
             pyautogui.click(x=(crop_x1 + max_x), y=(crop_y1 + max_y))
-            pyautogui.moveTo(*prevMouse)
-            # Stay focus/active on the OpenCV window for we will miss the
-            # keyboard event if we don't focus on the window
+
+            # FIXME: Any better solution?
+            # Rollback to the preserved mouse position. Click to stay focus/active
+            # on the OpenCV window for we will miss the keyboard event if we don't
+            # focus on the window.
             pyautogui.click(*prevMouse)
+
+            # Record the trigger time
             lastAutoGameTime = time.time()
 
     # Processing time of this frame
@@ -178,6 +203,7 @@ while True:
 
     cv2.imshow('Window', screen)
 
+    # Handle keyboard events
     key = cv2.waitKey(waitMs)
     if key == 27:
         break
