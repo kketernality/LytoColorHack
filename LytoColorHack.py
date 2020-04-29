@@ -20,7 +20,7 @@ maxNumDrawing = 100
 
 # Create a flexible window to display
 cv2.namedWindow('Window', cv2.WINDOW_NORMAL)
-screen = np.asarray(ImageGrab.grab())
+screen = np.asarray(ImageGrab.grab(), dtype=np.uint8)
 
 # Identify main screen resolution
 if len(screen.shape) == 3:
@@ -67,8 +67,7 @@ while True:
     # Fail to take the screenshot
     if screen is None:
         continue
-
-    screen = np.asarray(screen)
+    screen = np.asarray(screen, dtype=np.uint8)
     screen = cv2.cvtColor(screen, cv2.COLOR_RGB2BGR)
 
     # Using OpenCV to find circles in screen
